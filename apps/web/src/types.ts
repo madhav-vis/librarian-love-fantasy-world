@@ -12,12 +12,20 @@ export interface Character {
   position?: "left" | "center" | "right";
 }
 
+export interface Question {
+  question: string;
+  choices: Choice[];
+}
+
 export interface QuizNode {
   id: string;
   type: "dialogue" | "quiz" | "feedback";
   speaker?: string;
-  text: string;
-  choices?: Choice[];
+  text?: string; // Legacy support
+  summary?: string; // Summary text before questions
+  questions?: Question[]; // Array of 5 questions
+  currentQuestionIndex?: number; // Current question being shown
+  choices?: Choice[]; // Legacy support for single question
   next?: string;
   character?: Character;
   background?: string;
@@ -26,7 +34,8 @@ export interface QuizNode {
 export interface BookData {
   bookId: string;
   title: string;
-  progress: number; // Kept for backward compatibility, represents page number
+  progress: number; // Chapter index + 1
   totalPages: number;
   currentNode: QuizNode;
+  gems?: number; // Gem count
 }

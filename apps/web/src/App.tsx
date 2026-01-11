@@ -2,9 +2,10 @@ import { useState } from "react";
 import { UploadScreen } from "./components/UploadScreen";
 import { ChapterSelectionScreen } from "./components/ChapterSelectionScreen";
 import { VNScene } from "./components/VNScene";
+import { LoadingScreen } from "./components/LoadingScreen";
 import type { BookData, QuizNode } from "./types";
 
-type AppState = "upload" | "chapter-selection" | "game";
+type AppState = "upload" | "chapter-selection" | "loading" | "game";
 
 export default function App() {
   const [state, setState] = useState<AppState>("upload");
@@ -20,7 +21,13 @@ export default function App() {
   };
 
   const handleChapterSelect = async (chapterIndex: number) => {
+    // Show loading screen
+    setState("loading");
+    
     try {
+      // Calculate initial gems = chapter number * 10 (chapterIndex is 0-based, so +1)
+      const initialGems = (chapterIndex + 1) * 10;
+      
       // Fetch quiz for selected chapter
       const quizResponse = await fetch(`/api/quiz/${bookId}?chapterIndex=${chapterIndex}`);
       
@@ -36,6 +43,7 @@ export default function App() {
         progress: chapterIndex + 1,
         totalPages: 0, // Not needed for chapter-based flow
         currentNode: quizNode,
+        gems: initialGems,
       });
       
       setCurrentNode(quizNode);
@@ -43,6 +51,7 @@ export default function App() {
     } catch (error) {
       console.error("Failed to load quiz:", error);
       alert(error instanceof Error ? error.message : "Failed to start game");
+      setState("chapter-selection"); // Go back to chapter selection on error
     }
   };
 
@@ -61,6 +70,15 @@ export default function App() {
     );
   }
 
+  if (state === "loading") {
+    return <LoadingScreen />;
+  }
+
+  const handleGameComplete = () => {
+    // Game completed - go back to chapter selection
+    setState("chapter-selection");
+  };
+
   if (state === "game") {
     if (!bookData || !currentNode) {
       return <div className="loading">Loading game...</div>;
@@ -70,6 +88,7 @@ export default function App() {
         bookData={bookData}
         currentNode={currentNode}
         onNodeChange={setCurrentNode}
+        onGameComplete={handleGameComplete}
       />
     );
   }

@@ -37,22 +37,68 @@ export async function generateQuizNode(
     const textLength = textContent.length;
     logComplete(`  ✓ Content extracted (${textLength} characters)`);
 
-    // Segment text if too long (use first segment for quiz)
-    logProgress("  → Processing passage text...");
-    const segments = segmentText(textContent, 1500);
-    const passage = segments[0] || textContent.substring(0, 1500);
-    logComplete(`  ✓ Passage prepared (${passage.length} characters, ${segments.length} segment${segments.length !== 1 ? 's' : ''})`);
+    // Generate 5 random 10K chunks for 5 different questions
+    logProgress("  → Preparing 5 random 10K chunks for quiz generation...");
+    const chunkSize = 10000;
+    const chunks: string[] = [];
+    
+    if (textContent.length <= chunkSize) {
+      // If content is smaller than 10K, randomly select chunks from the available content
+      const contentLength = textContent.length;
+      const actualChunkSize = Math.max(Math.floor(contentLength / 3), 500); // Use at least 1/3 of content or 500 chars
+      const maxStart = Math.max(0, contentLength - actualChunkSize);
+      const chunkPositions: number[] = [];
+      
+      // Generate 5 random chunks from the available content
+      for (let i = 0; i < 5; i++) {
+        const startPos = Math.floor(Math.random() * (maxStart + 1));
+        const endPos = Math.min(startPos + actualChunkSize, contentLength);
+        chunks.push(textContent.substring(startPos, endPos));
+        chunkPositions.push(startPos);
+      }
+      
+      logProgress(`  → Generated 5 random chunks from ${contentLength} chars (positions: ${chunkPositions.map(p => Math.floor(p/1000)).join('k, ')}k)`);
+    } else {
+      // Generate 5 random non-overlapping chunks
+      const maxStart = textContent.length - chunkSize;
+      const chunkPositions: number[] = [];
+      
+      // Generate 5 random start positions, ensuring non-overlapping chunks
+      for (let i = 0; i < 5; i++) {
+        let startPos: number;
+        let attempts = 0;
+        do {
+          startPos = Math.floor(Math.random() * maxStart);
+          attempts++;
+          // If we can't find a non-overlapping position after 50 attempts, just use sequential
+          if (attempts > 50) {
+            startPos = Math.floor((i / 5) * maxStart);
+            break;
+          }
+          // Check for overlap: two chunks overlap if start1 < start2 + size && start2 < start1 + size
+        } while (chunkPositions.some(pos => 
+          (startPos < pos + chunkSize && pos < startPos + chunkSize)
+        ));
+        
+        chunkPositions.push(startPos);
+        chunks.push(textContent.substring(startPos, startPos + chunkSize));
+      }
+      
+      logProgress(`  → Generated 5 random chunks (positions: ${chunkPositions.map(p => Math.floor(p/1000)).join('k, ')}k)`);
+    }
+    
+    logComplete(`  ✓ Prepared 5 chunks of ${chunkSize} characters each`);
 
     // Check if API key is configured
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       logProgress("  ⚠ GEMINI_API_KEY not set, using mock quiz");
-      return generateMockQuizNode(bookId, passage, nodeId);
+      return generateMockQuizNode(bookId, chunks[0], nodeId);
     }
 
-    // Generate quiz using LLM with explicit grounding instructions
-    logProgress("  → Generating quiz with LLM (this may take 10-30 seconds)...");
-    const userPrompt = QUIZ_USER_PROMPT_TEMPLATE(passage, pageNumber);
+    // Generate quiz using LLM with 5 random chunks
+    logProgress("  → Generating quiz with LLM using 5 random chunks (this may take 10-30 seconds)...");
+    const userPrompt = QUIZ_USER_PROMPT_TEMPLATE(chunks, pageNumber);
     const response = await generateWithLLM(QUIZ_SYSTEM_PROMPT, userPrompt);
     logComplete("  ✓ LLM response received");
     
@@ -63,77 +109,66 @@ export async function generateQuizNode(
 
     // Validate and format quiz node
     logProgress("  → Validating quiz data...");
-    if (!quizData.question || !quizData.choices || !Array.isArray(quizData.choices)) {
-      throw new Error("Invalid quiz format from LLM");
+    if (!quizData.questions || !Array.isArray(quizData.questions) || quizData.questions.length === 0) {
+      throw new Error("Invalid quiz format from LLM - expected questions array");
     }
-    logComplete("  ✓ Quiz data validated");
-
-    // Validate that the quiz is grounded in the passage
-    // Check if question and choices reference the passage content
-    const passageLower = passage.toLowerCase();
-    const questionLower = quizData.question.toLowerCase();
-    const allChoicesText = quizData.choices.map((c: any) => c.text?.toLowerCase() || "").join(" ");
     
-    // Extract key words/phrases from passage (first 100 words)
-    const passageWords = passageLower.split(/\s+/).slice(0, 100).filter(w => w.length > 3);
-    const passageKeywords = new Set(passageWords);
-    
-    // Check if question or choices contain keywords from passage
-    const questionHasKeywords = passageKeywords.size > 0 && Array.from(passageKeywords).some(
-      keyword => questionLower.includes(keyword)
-    );
-    const choicesHaveKeywords = passageKeywords.size > 0 && Array.from(passageKeywords).some(
-      keyword => allChoicesText.includes(keyword)
-    );
-
-    // If no keywords match, log a warning (but don't fail - LLM might use synonyms)
-    if (!questionHasKeywords && !choicesHaveKeywords && passageKeywords.size > 5) {
-      console.warn("Quiz may not be grounded in passage - few keywords match. Passage length:", passage.length);
+    // Ensure we have exactly 5 questions (take first 5 if more, pad if less)
+    const questions = quizData.questions.slice(0, 5);
+    if (questions.length < 5) {
+      logProgress(`  ⚠ Only ${questions.length} questions received, expected 5`);
     }
-
-    // Ensure exactly one correct answer
-    const correctCount = quizData.choices.filter((c: any) => c.isCorrect).length;
-    if (correctCount !== 1) {
-      // Fix: mark first choice as correct if none/invalid
-      if (correctCount === 0) {
-        quizData.choices[0].isCorrect = true;
-      } else {
-        // If multiple, keep only the first one as correct
-        let foundFirst = false;
-        quizData.choices.forEach((c: any) => {
-          if (c.isCorrect && !foundFirst) {
-            foundFirst = true;
-          } else {
-            c.isCorrect = false;
-          }
-        });
+    
+    // Process each question
+    const processedQuestions = questions.map((q: any, qIndex: number) => {
+      if (!q.question || !q.choices || !Array.isArray(q.choices)) {
+        throw new Error(`Invalid question format at index ${qIndex}`);
       }
-    }
+      
+      // Ensure exactly one correct answer per question
+      const correctCount = q.choices.filter((c: any) => c.isCorrect).length;
+      if (correctCount !== 1) {
+        if (correctCount === 0) {
+          q.choices[0].isCorrect = true;
+        } else {
+          let foundFirst = false;
+          q.choices.forEach((c: any) => {
+            if (c.isCorrect && !foundFirst) {
+              foundFirst = true;
+            } else {
+              c.isCorrect = false;
+            }
+          });
+        }
+      }
+      
+      // Format choices with IDs and feedback
+      const choices = q.choices.map((choice: any, index: number) => ({
+        id: `choice-${index + 1}`,
+        text: choice.text || `Choice ${index + 1}`,
+        isCorrect: choice.isCorrect === true,
+        feedback: choice.feedback || (choice.isCorrect ? "Correct!" : "Not quite. Try again."),
+      }));
+      
+      return {
+        question: q.question,
+        choices,
+      };
+    });
+    
+    logComplete(`  ✓ Quiz data validated (${processedQuestions.length} questions)`);
 
-    // Format choices with IDs
-    const choices = quizData.choices.map((choice: any, index: number) => ({
-      id: `choice-${index + 1}`,
-      text: choice.text || `Choice ${index + 1}`,
-      isCorrect: choice.isCorrect === true,
-      feedback: choice.feedback || (choice.isCorrect ? "Correct!" : "Not quite. Try again."),
-    }));
-
-    // Create quiz node
+    // Create quiz node with all questions
     const quizNode = {
       id: nodeId || `node-${Date.now()}`,
       type: "quiz" as const,
       speaker: "Quiz Master",
-      text: quizData.summary 
-        ? `${quizData.summary}\n\n${quizData.question}`
-        : `Read the passage and answer:\n\n${quizData.question}`,
-      choices,
+      summary: quizData.summary || "Quiz time! Answer the questions based on the passage you read.",
+      questions: processedQuestions,
+      currentQuestionIndex: 0,
       next: `node-${Date.now() + 1}`,
       background: undefined,
-      character: {
-        id: "narrator",
-        name: "Narrator",
-        position: "center" as const,
-      },
+      character: undefined,
     };
 
     return quizNode;
@@ -181,10 +216,6 @@ function generateMockQuizNode(bookId: string, passage: string, nodeId?: string) 
     ],
     next: `node-${Date.now() + 1}`,
     background: undefined,
-    character: {
-      id: "narrator",
-      name: "Narrator",
-      position: "center" as const,
-    },
+    character: undefined,
   };
 }

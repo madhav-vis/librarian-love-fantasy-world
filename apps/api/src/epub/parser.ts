@@ -221,25 +221,41 @@ export async function getBookContentByChapterIndex(bookId: string, chapterIndex:
     throw new Error(`Invalid chapter index: ${chapterIndex} (valid range: 0-${flow.length - 1})`);
   }
 
-  const targetItem = flow[chapterIndex];
-  logProgress(`  → Loading chapter ${chapterIndex + 1}/${flow.length} (${targetItem.title || targetItem.id})...`);
+  // Get content from chapters 0 through chapterIndex (inclusive)
+  // So chapterIndex 15 means chapters 1-16 (1-based)
+  logProgress(`  → Loading chapters 1 through ${chapterIndex + 1}...`);
   
-  const textContent = await getChapterText(book, targetItem.id);
+  const chaptersToLoad = chapterIndex + 1; // +1 because we want chapters 0 to chapterIndex (inclusive)
+  let combinedText = "";
   
-  logProgress(`  → Extracted chapter text (${textContent.length} characters)`);
-  
-  if (!textContent || textContent.trim().length === 0) {
-    logError("  ✗ Chapter text is empty!");
-    return "No text content found in this section.";
+  for (let i = 0; i < chaptersToLoad; i++) {
+    const targetItem = flow[i];
+    logProgress(`  → Loading chapter ${i + 1}/${chaptersToLoad} (${targetItem.title || targetItem.id})...`);
+    
+    try {
+      const chapterText = await getChapterText(book, targetItem.id);
+      if (chapterText && chapterText.trim().length > 0) {
+        combinedText += chapterText + "\n\n";
+      }
+    } catch (error) {
+      logError(`  ✗ Failed to load chapter ${i + 1}`, error);
+    }
   }
   
-  if (textContent.length < 10) {
-    logError(`  ✗ Text extraction failed - only ${textContent.length} characters after processing`);
-    return "No text content found in this section.";
+  logProgress(`  → Extracted text from ${chaptersToLoad} chapters (${combinedText.length} characters)`);
+  
+  if (!combinedText || combinedText.trim().length === 0) {
+    logError("  ✗ No text content found!");
+    return "No text content found in these chapters.";
   }
   
-  logComplete(`  ✓ Content extracted (${textContent.length} characters)`);
-  return textContent;
+  if (combinedText.length < 10) {
+    logError(`  ✗ Text extraction failed - only ${combinedText.length} characters after processing`);
+    return "No text content found in these chapters.";
+  }
+  
+  logComplete(`  ✓ Content extracted (${combinedText.length} characters from chapters 1-${chaptersToLoad})`);
+  return combinedText.trim();
 }
 
 export async function getBookContentByCFI(bookId: string, cfi: string): Promise<string> {

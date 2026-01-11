@@ -14,15 +14,19 @@ export function DialogueBox({
 }: DialogueBoxProps) {
   const [visibleText, setVisibleText] = useState("");
   
-  // every 100ms, add a character to the visible text
+  // Faster typing animation - add characters more quickly
   useEffect(() => {
+    setVisibleText(""); // Reset when text changes
     const interval = setInterval(() => {
-      if (visibleText.length < text.length) {
-        setVisibleText(text.slice(0, visibleText.length + 1));
-      }
-    }, 50);
+      setVisibleText((prev) => {
+        if (prev.length < text.length) {
+          return text.slice(0, prev.length + 2); // Add 2 characters at a time for faster animation
+        }
+        return prev;
+      });
+    }, 20); // Faster interval
     return () => clearInterval(interval);
-  }, [text, visibleText]);
+  }, [text]);
 
   return (
     <div className="dialogue-box">

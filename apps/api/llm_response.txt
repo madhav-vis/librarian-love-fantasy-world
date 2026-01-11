@@ -1,28 +1,132 @@
 ```json
 {
-  "question": "According to the passage, what specific event led the narrator to employ \"direct action\" against bedtime, and what did this action involve?",
-  "choices": [
+  "questions": [
     {
-      "text": "The narrator had just turned six years old and had a wonderful day with friends, a party, and gifts, which they didn't want to end, leading them to covertly reset all the clocks in the house.",
-      "isCorrect": true,
-      "feedback": "The passage states, \"on night 2,193, the night I turned six years old—I discovered direct action,\" and \"I had just had one of the best days of my young life, complete with friends, a party, and even gifts, and I wasn’t about to let it end... So I went about covertly resetting all the clocks in the house.\" This directly matches the information provided."
+      "question": "What was the primary purpose of the math challenges the narrator's mother gave him at stores like Kmart or Winn-Dixie?",
+      "choices": [
+        {
+          "text": "To teach him about adding prices, estimating, rounding, and calculating sales tax, and to buy him books and model cars if he succeeded.",
+          "isCorrect": true,
+          "feedback": "The text states his mother gave him math challenges to have him mentally add prices, estimate, round, and calculate sales tax (initially 3%, then 4%), and she would buy him books and model cars if he was able to do so."
+        },
+        {
+          "text": "To prepare him for a future career in accounting or finance, ensuring he understood complex economic principles from a young age.",
+          "isCorrect": false,
+          "feedback": "The text does not state the purpose was to prepare him for a career in accounting or finance; it focused on teaching basic arithmetic and the concept of sales tax."
+        },
+        {
+          "text": "To make sure he could afford the items he picked out by having him contribute his own money if he failed the calculations.",
+          "isCorrect": false,
+          "feedback": "The text indicates she would buy him the items if he successfully performed the mental calculations, not that he had to contribute his own money if he failed."
+        },
+        {
+          "text": "To ensure he always knew the exact amount of money to bring to the store, as they only paid for purchases with cash.",
+          "isCorrect": false,
+          "feedback": "While the challenges involved precise amounts, the text does not mention the family exclusively paid with cash or that this was the specific reason for the challenges."
+        }
+      ]
     },
     {
-      "text": "The narrator was tired of their parents sending them to bed before their sister, so they convinced their sister to help them reset the clocks in the house.",
-      "isCorrect": false,
-      "feedback": "While the narrator felt it was unfair to go to sleep before their sister, the passage does not state that the sister was involved in resetting the clocks. The narrator acted alone and covertly."
+      "question": "According to the text, what significant event related to interconnected computers occurred in 1983?",
+      "choices": [
+        {
+          "text": "The US Department of Defense split its internal system, creating MILNET for defense and the Internet for the public, which also gave rise to the Domain Name System.",
+          "isCorrect": true,
+          "feedback": "The text explicitly states that 1983 was the year the US Department of Defense split its internal system into MILNET and the Internet, and new rules defined this virtual space, giving rise to the Domain Name System."
+        },
+        {
+          "text": "The World Wide Web was invented, allowing the public to access information globally through web browsers and new protocols.",
+          "isCorrect": false,
+          "feedback": "The text mentions the World Wide Web was invented 'another six years' after 1983, not in 1983 itself."
+        },
+        {
+          "text": "The first home computers with modems became widely available, connecting millions to the nascent Internet for the first time.",
+          "isCorrect": false,
+          "feedback": "The text indicates the narrator's family got a computer with a modem 'about nine years' after 1983, suggesting widespread availability didn't happen in 1983."
+        },
+        {
+          "text": "Standardized application protocols like HTTP and FTP were established for universal data transfer and communication across all networks.",
+          "isCorrect": false,
+          "feedback": "While protocols are discussed, the text specifies that the 1983 event was the DOD split and the emergence of the Domain Name System, not the establishment of all application protocols."
+        }
+      ]
     },
     {
-      "text": "The \"authorities\" failed to notice the narrator's crying and begging for reform, prompting the narrator to loudly announce they were the master of time and refuse to sleep.",
-      "isCorrect": false,
-      "feedback": "The passage mentions that the authorities weren't interested in calls for reform (crying, begging). However, the direct action involved covertly resetting clocks, not a loud announcement. The feeling of being 'master of time' came after the clocks were reset and unnoticed."
+      "question": "What was the narrator's initial reaction to programming on the computer, as demonstrated by his first successful interaction?",
+      "choices": [
+        {
+          "text": "He was fascinated when the computer asked for his name and then responded with 'HELLO, EDDIE!', realizing machines follow specific instructions.",
+          "isCorrect": true,
+          "feedback": "The text describes the narrator being 'fascinated' when the computer asked 'WHAT IS YOUR NAME?' and then displayed 'HELLO, EDDIE!', leading to his understanding that 'these machines do what they do because somebody tells them to'."
+        },
+        {
+          "text": "He was frustrated by the complex keyboard layout and the need to hold down the Shift key for quotation marks, which made the experience difficult.",
+          "isCorrect": false,
+          "feedback": "While he struggled with the Shift key and didn't know what quotation marks were, his *initial reaction to the successful interaction* was fascination, not frustration."
+        },
+        {
+          "text": "He immediately understood the limitations of gaming systems compared to the freedom offered by computer programming.",
+          "isCorrect": false,
+          "feedback": "This understanding came 'almost immediately' after his introduction to programming, but it was not his *initial reaction* to the computer's output of 'HELLO, EDDIE!'."
+        },
+        {
+          "text": "He found the process of typing commands to be a natural method of writing, even though he was left-handed and raised to be right-handed.",
+          "isCorrect": false,
+          "feedback": "This describes his physical experience of typing, but not his *reaction to the computer's response* or the concept of programming itself."
+        }
+      ]
     },
     {
-      "text": "The narrator wanted to experience the summer solstice in June and decided to stay awake all night to see the sunrise by disabling the household clocks.",
-      "isCorrect": false,
-      "feedback": "The passage states the narrator fell asleep on the floor and 'finally seen the sunset on June 21, the summer solstice,' but the motivation for the direct action was to extend a good day, not specifically to experience the solstice or see the sunrise. The action was resetting clocks, not disabling them."
+      "question": "How did the narrator's experience with the early Internet, particularly during his adolescence, impact his academic performance and view of education?",
+      "choices": [
+        {
+          "text": "His grades plummeted as he spent every waking moment online, but he believed the education he received online was better and more practical for his future career than school.",
+          "isCorrect": true,
+          "feedback": "The text states his grades 'went back into free fall' as he became more sedentary and slept by day in school, but he 'wasn’t worried' because he believed the online education was 'better and even more practical for my future career prospects than anything provided by school'."
+        },
+        {
+          "text": "He maintained excellent grades because the Internet provided him with advanced resources for his school projects and research papers, making him a top student.",
+          "isCorrect": false,
+          "feedback": "The text explicitly states that his grades 'went back into free fall', contradicting the idea that he maintained excellent grades."
+        },
+        {
+          "text": "He found school less challenging because he had already mastered many subjects through his extensive online learning and exploration.",
+          "isCorrect": false,
+          "feedback": "His academic performance suffered, with grades plummeting, indicating that school did not necessarily become 'less challenging' for him in terms of results."
+        },
+        {
+          "text": "His parents frequently praised his dedication to online learning, recognizing it as a superior form of education compared to traditional schooling.",
+          "isCorrect": false,
+          "feedback": "The narrator states he 'wasn’t worried' and wasn't sure his parents were either, and that he 'kept telling' them the online education was better, but it doesn't say they 'frequently praised' it."
+        }
+      ]
+    },
+    {
+      "question": "According to the narrator's father, what was the 'proper protocol for repair jobs' and a 'fundamental responsibility to technology'?",
+      "choices": [
+        {
+          "text": "Understanding why and how things went wrong, not just what component failed, to prevent future malfunctions and to determine if a mechanism's design was efficient or needed modification.",
+          "isCorrect": true,
+          "feedback": "The father explained that 'understanding why and how things had gone wrong was every bit as important as understanding what component had failed' to prevent future malfunctions and to determine if the design was efficient for its task, fixing it or modifying it accordingly. This was the 'proper protocol' and 'fundamental responsibility'."
+        },
+        {
+          "text": "Always attempting to fix equipment yourself, even if it meant risking further damage, to foster self-reliance and avoid technological tyranny.",
+          "isCorrect": false,
+          "feedback": "While self-reliance was a broader lesson, the specific protocol emphasized understanding the mechanism before attempting repair, not just blindly trying to fix it yourself at any risk."
+        },
+        {
+          "text": "Replacing broken machines with newer models if the cost of repair exceeded the cost of a new item, to avoid technological tyranny.",
+          "isCorrect": false,
+          "feedback": "The father lamented this societal trend as leading to 'technological tyranny,' indicating it was precisely what he opposed, not a 'proper protocol for repair'."
+        },
+        {
+          "text": "Focusing solely on identifying the failed component and replacing it with a new one, as efficiency in repair was paramount.",
+          "isCorrect": false,
+          "feedback": "The father explicitly stated that 'understanding why and how things had gone wrong was every bit as important as understanding what component had failed,' contradicting the idea of focusing solely on the failed component."
+        }
+      ]
     }
   ],
-  "summary": "The passage describes the narrator's first 'hack,' which occurred on their sixth birthday when they covertly reset all the household clocks to extend a wonderful day and avoid bedtime, resulting in them feeling like the 'master of time' before eventually falling asleep on the floor."
+  "summary": "This text explores the narrator's family history, early childhood experiences with reading, math, and mythology, and his formative interactions with nascent computing and the Internet. It details his struggles adapting to a new environment, his deep immersion in online culture, and the profound lessons learned from his father about technology and self-reliance."
 }
 ```
