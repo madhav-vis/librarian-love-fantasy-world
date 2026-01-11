@@ -1,28 +1,28 @@
 ```json
 {
-  "question": "According to the passage, which of the following accurately describes historical events or circumstances involving members of the Snowden family?",
+  "question": "According to the passage, what specific event led the narrator to employ \"direct action\" against bedtime, and what did this action involve?",
   "choices": [
     {
-      "text": "Richard Snowden's arrival in Maryland expecting religious freedom, John Snowden's imprisonment for preaching the Quaker faith, and three of John's grandsons serving in the Continental Army during the Revolution.",
+      "text": "The narrator had just turned six years old and had a wonderful day with friends, a party, and gifts, which they didn't want to end, leading them to covertly reset all the clocks in the house.",
       "isCorrect": true,
-      "feedback": "The passage states that Richard Snowden arrived in Maryland in 1658 with an understanding of religious freedom, John Snowden was imprisoned for preaching the Quaker faith before joining his brother in 1674, and three of John's grandsons served in the Continental Army during the Revolution."
+      "feedback": "The passage states, \"on night 2,193, the night I turned six years old—I discovered direct action,\" and \"I had just had one of the best days of my young life, complete with friends, a party, and even gifts, and I wasn’t about to let it end... So I went about covertly resetting all the clocks in the house.\" This directly matches the information provided."
     },
     {
-      "text": "Richard Snowden leading a rebellion against Lord Baltimore in Maryland due to the suppression of Quaker religious freedom.",
+      "text": "The narrator was tired of their parents sending them to bed before their sister, so they convinced their sister to help them reset the clocks in the house.",
       "isCorrect": false,
-      "feedback": "The passage states Richard Snowden arrived with the *understanding* that Lord Baltimore's guarantee of religious freedom would extend to Quakers, not that he led a rebellion due to its suppression."
+      "feedback": "While the narrator felt it was unfair to go to sleep before their sister, the passage does not state that the sister was involved in resetting the clocks. The narrator acted alone and covertly."
     },
     {
-      "text": "William Penn transporting the entire Snowden family to Maryland on his ship, the Welcome, in 1682.",
+      "text": "The \"authorities\" failed to notice the narrator's crying and begging for reform, prompting the narrator to loudly announce they were the master of time and refuse to sleep.",
       "isCorrect": false,
-      "feedback": "The passage mentions John Snowden greeted William Penn's ship, the Welcome, in 1682, but Richard Snowden had arrived in Maryland much earlier in 1658, and it does not state the entire family arrived on that ship."
+      "feedback": "The passage mentions that the authorities weren't interested in calls for reform (crying, begging). However, the direct action involved covertly resetting clocks, not a loud announcement. The feeling of being 'master of time' came after the clocks were reset and unnoticed."
     },
     {
-      "text": "The Snowden family establishing sugar house prisons in Manhattan where British POWs were killed by being forced to eat gruel laced with ground glass.",
+      "text": "The narrator wanted to experience the summer solstice in June and decided to stay awake all night to see the sunrise by disabling the household clocks.",
       "isCorrect": false,
-      "feedback": "The passage states William Snowden died in custody at a sugar house prison and mentions a legend about the British killing POWs there, but it does not indicate the Snowden family established these prisons or were involved in such practices."
+      "feedback": "The passage states the narrator fell asleep on the floor and 'finally seen the sunset on June 21, the summer solstice,' but the motivation for the direct action was to extend a good day, not specifically to experience the solstice or see the sunrise. The action was resetting clocks, not disabling them."
     }
   ],
-  "summary": "The passage introduces the narrator's family history, explaining the prevalence of the 'Snowden' name in Anne Arundel, Maryland, through generations of ancestors. It details Richard and John Snowden's early arrival in Maryland, their Quaker faith, and the service of John's grandsons, including the narrator's direct ancestor William Snowden, in the Continental Army despite their pacifist beliefs."
+  "summary": "The passage describes the narrator's first 'hack,' which occurred on their sixth birthday when they covertly reset all the household clocks to extend a wonderful day and avoid bedtime, resulting in them feeling like the 'master of time' before eventually falling asleep on the floor."
 }
 ```
