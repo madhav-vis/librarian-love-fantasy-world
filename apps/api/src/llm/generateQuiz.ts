@@ -40,24 +40,18 @@ export async function generateQuizNode(
     // Generate 5 random 10K chunks for 5 different questions
     logProgress("  → Preparing 5 random 10K chunks for quiz generation...");
     const chunkSize = 10000;
+    const totalNeededSize = chunkSize * 5; // Need 50K total for 5 non-overlapping 10K chunks
     const chunks: string[] = [];
     
-    if (textContent.length <= chunkSize) {
-      // If content is smaller than 10K, randomly select chunks from the available content
+    if (textContent.length < totalNeededSize) {
+      // If content is less than 50K, use the maximum amount of content available
       const contentLength = textContent.length;
-      const actualChunkSize = Math.max(Math.floor(contentLength / 3), 500); // Use at least 1/3 of content or 500 chars
-      const maxStart = Math.max(0, contentLength - actualChunkSize);
-      const chunkPositions: number[] = [];
-      
-      // Generate 5 random chunks from the available content
+      // Use the entire content for all 5 chunks (they can overlap since we don't have enough content)
       for (let i = 0; i < 5; i++) {
-        const startPos = Math.floor(Math.random() * (maxStart + 1));
-        const endPos = Math.min(startPos + actualChunkSize, contentLength);
-        chunks.push(textContent.substring(startPos, endPos));
-        chunkPositions.push(startPos);
+        chunks.push(textContent);
       }
       
-      logProgress(`  → Generated 5 random chunks from ${contentLength} chars (positions: ${chunkPositions.map(p => Math.floor(p/1000)).join('k, ')}k)`);
+      logProgress(`  → Content is ${contentLength} chars (less than ${totalNeededSize}), using full content for all chunks`);
     } else {
       // Generate 5 random non-overlapping chunks
       const maxStart = textContent.length - chunkSize;
@@ -87,7 +81,8 @@ export async function generateQuizNode(
       logProgress(`  → Generated 5 random chunks (positions: ${chunkPositions.map(p => Math.floor(p/1000)).join('k, ')}k)`);
     }
     
-    logComplete(`  ✓ Prepared 5 chunks of ${chunkSize} characters each`);
+    const actualChunkSize = chunks[0]?.length || chunkSize;
+    logComplete(`  ✓ Prepared 5 chunks of ${actualChunkSize} characters each`);
 
     // Check if API key is configured
     const apiKey = process.env.GEMINI_API_KEY;

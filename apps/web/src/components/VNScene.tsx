@@ -16,6 +16,8 @@ export function VNScene({ bookData, currentNode, onNodeChange, onGameComplete }:
   const [showFeedback, setShowFeedback] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [gems, setGems] = useState(bookData.gems || 0);
+  const [backgroundOpacity, setBackgroundOpacity] = useState(0); // Start at 100% transparency (opacity: 0)
+  const [vincentSprite, setVincentSprite] = useState("Vincent_Battle.png");
 
   useEffect(() => {
     if (bookData.currentNode) {
@@ -28,7 +30,18 @@ export function VNScene({ bookData, currentNode, onNodeChange, onGameComplete }:
     if (currentNode?.questions && currentNode.currentQuestionIndex !== undefined) {
       setCurrentQuestionIndex(currentNode.currentQuestionIndex);
     }
+    // Reset sprite when question changes
+    setVincentSprite("Vincent_Battle.png");
   }, [bookData, currentNode]);
+
+  // Fade in background after 0.5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setBackgroundOpacity(1); // Fade to 0% transparency (fully visible)
+    }, 500); // 0.5 seconds delay
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Support both old format (single question) and new format (multiple questions)
   const hasMultipleQuestions = currentNode?.questions && currentNode.questions.length > 0;
@@ -42,6 +55,16 @@ export function VNScene({ bookData, currentNode, onNodeChange, onGameComplete }:
   const handleChoiceSelect = (choiceId: string) => {
     setSelectedChoice(choiceId);
     setShowFeedback(true);
+    
+    // Change sprite based on whether answer is correct or wrong
+    const choiceData = currentChoices?.find((c) => c.id === choiceId);
+    if (choiceData) {
+      if (choiceData.isCorrect) {
+        setVincentSprite("Vincent_BattleLove.png");
+      } else {
+        setVincentSprite("Vincent_BattleAngry.png");
+      }
+    }
   };
 
   const handleNext = () => {
@@ -61,6 +84,7 @@ export function VNScene({ bookData, currentNode, onNodeChange, onGameComplete }:
         setCurrentQuestionIndex(currentQuestionIndex + 1);
         setSelectedChoice(null);
         setShowFeedback(false);
+        setVincentSprite("Vincent_Battle.png"); // Reset to default sprite for next question
       } else {
         // All questions completed - end the game
         if (onGameComplete) {
@@ -121,18 +145,50 @@ export function VNScene({ bookData, currentNode, onNodeChange, onGameComplete }:
         style={{
           backgroundImage: currentNode.background
             ? `url(${currentNode.background})`
-            : undefined,
+            : `url(/assets/images/Vincent_Library.jpg)`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: backgroundOpacity,
+          transition: 'opacity 0.5s ease-in-out',
         }}
       >
         {/* Character Sprites */}
         {currentNode.character && (
           <CharacterSprite character={currentNode.character} />
         )}
+        
+        {/* Vincent Battle Sprite */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: '55%',
+            transform: 'translateX(-50%)',
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 2,
+          }}
+        >
+          <img
+            src={`/assets/images/${vincentSprite}`}
+            alt="Vincent"
+            style={{
+              maxHeight: '90%',
+              maxWidth: '90%',
+              objectFit: 'contain',
+              transform: 'scale(2.5)',
+              transformOrigin: 'center center',
+            }}
+          />
+        </div>
       </div>
 
       {/* Dialogue Box (RenPy style at bottom) */}
       <DialogueBox
-        speaker={currentNode.speaker || "Quiz Master"}
+        speaker={currentNode.speaker || "Vincent"}
         text={displayText}
         onNext={handleNext}
         canAdvance={showFeedback || (!currentChoices && !hasMultipleQuestions)}
@@ -153,7 +209,18 @@ export function VNScene({ bookData, currentNode, onNodeChange, onGameComplete }:
         {hasMultipleQuestions && currentNode.questions && (
           <span>Question: {currentQuestionIndex + 1} / {currentNode.questions.length}</span>
         )}
-        <span>💎 Gems: {gems}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <img
+            src="/assets/images/Gem.png"
+            alt="Gem"
+            style={{
+              width: '40px',
+              height: '40px',
+              objectFit: 'contain',
+            }}
+          />
+          <span>Gems: {gems}</span>
+        </div>
       </div>
     </div>
   );

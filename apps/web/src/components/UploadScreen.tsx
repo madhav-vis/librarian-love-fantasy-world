@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface UploadScreenProps {
   onUpload: (bookId: string, title: string) => void;
@@ -9,6 +9,8 @@ export function UploadScreen({ onUpload }: UploadScreenProps) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
+  const [secondBackgroundOpacity, setSecondBackgroundOpacity] = useState(0); // Start with first background visible
+  const [containerOpacity, setContainerOpacity] = useState(0); // Start invisible
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -21,6 +23,24 @@ export function UploadScreen({ onUpload }: UploadScreenProps) {
       }
     }
   };
+
+  // First show library-background-new.jpg, then fade to library-background-with-characters.jpg, then fade in container
+  useEffect(() => {
+    // Step 1: Wait 0.5 seconds, then fade to library-background-with-characters.jpg
+    const switchBackgroundTimer = setTimeout(() => {
+      setSecondBackgroundOpacity(1);
+    }, 500);
+
+    // Step 2: After background switches, fade in the upload container
+    const fadeInContainerTimer = setTimeout(() => {
+      setContainerOpacity(1);
+    }, 1500); // 0.5s wait + 0.5s fade + 0.5s before container fades in
+
+    return () => {
+      clearTimeout(switchBackgroundTimer);
+      clearTimeout(fadeInContainerTimer);
+    };
+  }, []);
 
   const handleUpload = async () => {
     if (!file) return;
@@ -61,61 +81,88 @@ export function UploadScreen({ onUpload }: UploadScreenProps) {
   };
 
   return (
-    <div className="upload-screen">
-      <div className="upload-container">
-        <h1>EPUB Quiz Visual Novel</h1>
-        <p className="subtitle">Upload an EPUB file to generate an interactive quiz experience</p>
+    <div className="upload-screen" style={{ position: 'relative' }}>
+      {/* First background - library-background-new.jpg */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundImage: "url('/assets/images/library-background-new.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundAttachment: "fixed",
+          zIndex: 0,
+        }}
+      />
+      {/* Second background - library-background-with-characters.jpg - fades in */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundImage: "url('/assets/images/library-background-with-characters.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundAttachment: "fixed",
+          opacity: secondBackgroundOpacity,
+          transition: 'opacity 0.5s ease-in-out',
+          zIndex: 1,
+        }}
+      />
+      <div 
+        className="upload-container"
+        style={{
+          opacity: containerOpacity,
+          transition: 'opacity 0.5s ease-in-out',
+          position: 'relative',
+          zIndex: 2,
+        }}
+      >
+          <h1>Librarian Love:<br />Fantasy Tycoon 3</h1>
+          <p className="subtitle">What book are you reading?</p>
 
-        <div className="upload-area">
-          <input
-            type="file"
-            id="epub-upload"
-            accept=".epub"
-            onChange={handleFileChange}
-            disabled={uploading}
-            className="file-input"
-          />
-          <label htmlFor="epub-upload" className="file-label">
-            {file ? file.name : "Choose EPUB File"}
-          </label>
-
-          {file && (
-            <button
-              onClick={handleUpload}
+          <div className="upload-area">
+            <input
+              type="file"
+              id="epub-upload"
+              accept=".epub"
+              onChange={handleFileChange}
               disabled={uploading}
-              className="upload-button"
-            >
-              {uploading ? "Uploading..." : "Select Chapter"}
-            </button>
-          )}
+              className="file-input"
+            />
+            <label htmlFor="epub-upload" className="file-label">
+              {file ? file.name : "EPUB File Here!"}
+            </label>
 
-          {uploading && (
-            <div className="progress-bar">
-              <div
-                className="progress-fill"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-          )}
+            {file && (
+              <button
+                onClick={handleUpload}
+                disabled={uploading}
+                className="upload-button"
+              >
+                {uploading ? "Uploading..." : "Start Game"}
+              </button>
+            )}
 
-          {error && <div className="error-message">{error}</div>}
-        </div>
+            {uploading && (
+              <div className="progress-bar">
+                <div
+                  className="progress-fill"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+            )}
 
-        <div className="features">
-          <div className="feature">
-            <span className="feature-icon">📚</span>
-            <span>EPUB Upload</span>
-          </div>
-          <div className="feature">
-            <span className="feature-icon">🎮</span>
-            <span>RenPy Style</span>
-          </div>
-          <div className="feature">
-            <span className="feature-icon">❓</span>
-            <span>AI Quizzes</span>
+            {error && <div className="error-message">{error}</div>}
           </div>
         </div>
-      </div>
     </div>
   );
 }

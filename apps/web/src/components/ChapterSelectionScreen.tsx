@@ -69,25 +69,44 @@ export function ChapterSelectionScreen({
   }
 
   return (
-    <div className="upload-screen">
-      <div className="upload-container">
-        <h1>{title}</h1>
-        <p className="subtitle">Select a chapter to start</p>
+    <div 
+      className="upload-screen"
+      style={{
+        backgroundImage: "url('/assets/images/book_image.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <div 
+        className="upload-container" 
+        style={{ 
+          color: '#000',
+          background: 'rgba(255, 255, 255, 0.1)',
+        }}
+      >
+        <h1 style={{ color: '#000' }}>{title}</h1>
+        <p className="subtitle" style={{ color: '#000' }}>What chapter have you read up to?</p>
         
         <div className="chapters-list">
           {chapters.length === 0 ? (
-            <p>No chapters found</p>
+            <p style={{ color: '#000' }}>No chapters found</p>
           ) : (
-            chapters.map((chapter) => (
-              <button
-                key={chapter.id}
-                onClick={() => onChapterSelect(chapter.index)}
-                className="chapter-button"
-              >
-                <span className="chapter-number">{chapter.index + 1}</span>
-                <span className="chapter-title">{chapter.title}</span>
-              </button>
-            ))
+            chapters.map((chapter) => {
+              // Remove the number prefix from chapter title (e.g., "1. Title" -> "Title")
+              const cleanTitle = chapter.title.replace(/^\d+\.\s*/, '');
+              return (
+                <button
+                  key={chapter.id}
+                  onClick={() => onChapterSelect(chapter.index)}
+                  className="chapter-button"
+                  style={{ color: '#000' }}
+                >
+                  <span className="chapter-number" style={{ color: '#000' }}>{chapter.index + 1}</span>
+                  <span className="chapter-title" style={{ color: '#000' }}>{cleanTitle}</span>
+                </button>
+              );
+            })
           )}
         </div>
         

@@ -106,15 +106,17 @@ export const QUIZ_USER_PROMPT_TEMPLATE = (chunks: string[], pageNumber?: number)
     `--- Chunk ${index + 1} ---\n${chunk}\n`
   ).join('\n');
   
-  return `Generate 5 quiz questions from the following 5 text chunks${pageContext}. 
+  return `Generate 5 quiz questions from the following text passages${pageContext}. 
 
 IMPORTANT: 
-- Generate ONE question from EACH chunk (Question 1 from Chunk 1, Question 2 from Chunk 2, etc.)
-- Each question and ALL answer choices MUST be grounded ONLY in its corresponding chunk
-- Do not mix information between chunks
-- Do not use any information not explicitly stated in the chunks
+- Generate ONE question from EACH passage (Question 1 from Passage 1, Question 2 from Passage 2, etc.)
+- Each question and ALL answer choices MUST be grounded ONLY in its corresponding passage
+- Do not mix information between passages
+- Do not use any information not explicitly stated in the passages
+- Write questions as normal quiz questions - DO NOT mention "Chunk", "Passage", or any internal references in the questions or choices
+- Questions should read naturally without referencing which passage they came from
 
-Text Chunks:
+Text Passages:
 """
 ${chunksText}
 """
@@ -123,149 +125,150 @@ Return a JSON object with this exact structure:
 {
   "questions": [
     {
-      "question": "Your quiz question from Chunk 1 only",
+      "question": "Your quiz question based on the first passage only - write it as a normal quiz question",
       "choices": [
         {
-          "text": "Choice 1 text - must reference content from Chunk 1",
+          "text": "Choice 1 text - must be based on content from the first passage",
           "isCorrect": true,
-          "feedback": "Feedback explaining why this is correct, referencing Chunk 1"
+          "feedback": "Feedback explaining why this is correct"
         },
         {
-          "text": "Choice 2 text - must reference content from Chunk 1",
+          "text": "Choice 2 text - must be based on content from the first passage",
           "isCorrect": false,
-          "feedback": "Feedback explaining why this is incorrect, referencing Chunk 1"
+          "feedback": "Feedback explaining why this is incorrect"
         },
         {
-          "text": "Choice 3 text - must reference content from Chunk 1",
+          "text": "Choice 3 text - must be based on content from the first passage",
           "isCorrect": false,
-          "feedback": "Feedback explaining why this is incorrect, referencing Chunk 1"
+          "feedback": "Feedback explaining why this is incorrect"
         },
         {
-          "text": "Choice 4 text - must reference content from Chunk 1",
+          "text": "Choice 4 text - must be based on content from the first passage",
           "isCorrect": false,
-          "feedback": "Feedback explaining why this is incorrect, referencing Chunk 1"
+          "feedback": "Feedback explaining why this is incorrect"
         }
       ]
     },
     {
-      "question": "Your quiz question from Chunk 2 only",
+      "question": "Your quiz question based on the second passage only - write it as a normal quiz question",
       "choices": [
         {
-          "text": "Choice 1 text - must reference content from Chunk 2",
+          "text": "Choice 1 text - must be based on content from the corresponding passage",
           "isCorrect": true,
-          "feedback": "Feedback explaining why this is correct, referencing Chunk 2"
+          "feedback": "Feedback explaining why this is correct"
         },
         {
-          "text": "Choice 2 text - must reference content from Chunk 2",
+          "text": "Choice 2 text - must be based on content from the corresponding passage",
           "isCorrect": false,
-          "feedback": "Feedback explaining why this is incorrect, referencing Chunk 2"
+          "feedback": "Feedback explaining why this is incorrect"
         },
         {
-          "text": "Choice 3 text - must reference content from Chunk 2",
+          "text": "Choice 3 text - must be based on content from the corresponding passage",
           "isCorrect": false,
-          "feedback": "Feedback explaining why this is incorrect, referencing Chunk 2"
+          "feedback": "Feedback explaining why this is incorrect"
         },
         {
-          "text": "Choice 4 text - must reference content from Chunk 2",
+          "text": "Choice 4 text - must be based on content from the corresponding passage",
           "isCorrect": false,
-          "feedback": "Feedback explaining why this is incorrect, referencing Chunk 2"
+          "feedback": "Feedback explaining why this is incorrect"
         }
       ]
     },
     {
-      "question": "Your quiz question from Chunk 3 only",
+      "question": "Your quiz question based on the third passage only - write it as a normal quiz question",
       "choices": [
         {
-          "text": "Choice 1 text - must reference content from Chunk 3",
+          "text": "Choice 1 text - must be based on content from the corresponding passage",
           "isCorrect": true,
-          "feedback": "Feedback explaining why this is correct, referencing Chunk 3"
+          "feedback": "Feedback explaining why this is correct"
         },
         {
-          "text": "Choice 2 text - must reference content from Chunk 3",
+          "text": "Choice 2 text - must be based on content from the corresponding passage",
           "isCorrect": false,
-          "feedback": "Feedback explaining why this is incorrect, referencing Chunk 3"
+          "feedback": "Feedback explaining why this is incorrect"
         },
         {
-          "text": "Choice 3 text - must reference content from Chunk 3",
+          "text": "Choice 3 text - must be based on content from the corresponding passage",
           "isCorrect": false,
-          "feedback": "Feedback explaining why this is incorrect, referencing Chunk 3"
+          "feedback": "Feedback explaining why this is incorrect"
         },
         {
-          "text": "Choice 4 text - must reference content from Chunk 3",
+          "text": "Choice 4 text - must be based on content from the corresponding passage",
           "isCorrect": false,
-          "feedback": "Feedback explaining why this is incorrect, referencing Chunk 3"
+          "feedback": "Feedback explaining why this is incorrect"
         }
       ]
     },
     {
-      "question": "Your quiz question from Chunk 4 only",
+      "question": "Your quiz question based on the fourth passage only - write it as a normal quiz question",
       "choices": [
         {
-          "text": "Choice 1 text - must reference content from Chunk 4",
+          "text": "Choice 1 text - must be based on content from the corresponding passage",
           "isCorrect": true,
-          "feedback": "Feedback explaining why this is correct, referencing Chunk 4"
+          "feedback": "Feedback explaining why this is correct"
         },
         {
-          "text": "Choice 2 text - must reference content from Chunk 4",
+          "text": "Choice 2 text - must be based on content from the corresponding passage",
           "isCorrect": false,
-          "feedback": "Feedback explaining why this is incorrect, referencing Chunk 4"
+          "feedback": "Feedback explaining why this is incorrect"
         },
         {
-          "text": "Choice 3 text - must reference content from Chunk 4",
+          "text": "Choice 3 text - must be based on content from the corresponding passage",
           "isCorrect": false,
-          "feedback": "Feedback explaining why this is incorrect, referencing Chunk 4"
+          "feedback": "Feedback explaining why this is incorrect"
         },
         {
-          "text": "Choice 4 text - must reference content from Chunk 4",
+          "text": "Choice 4 text - must be based on content from the corresponding passage",
           "isCorrect": false,
-          "feedback": "Feedback explaining why this is incorrect, referencing Chunk 4"
+          "feedback": "Feedback explaining why this is incorrect"
         }
       ]
     },
     {
-      "question": "Your quiz question from Chunk 5 only",
+      "question": "Your quiz question based on the fifth passage only - write it as a normal quiz question",
       "choices": [
         {
-          "text": "Choice 1 text - must reference content from Chunk 5",
+          "text": "Choice 1 text - must be based on content from the corresponding passage",
           "isCorrect": true,
-          "feedback": "Feedback explaining why this is correct, referencing Chunk 5"
+          "feedback": "Feedback explaining why this is correct"
         },
         {
-          "text": "Choice 2 text - must reference content from Chunk 5",
+          "text": "Choice 2 text - must be based on content from the corresponding passage",
           "isCorrect": false,
-          "feedback": "Feedback explaining why this is incorrect, referencing Chunk 5"
+          "feedback": "Feedback explaining why this is incorrect"
         },
         {
-          "text": "Choice 3 text - must reference content from Chunk 5",
+          "text": "Choice 3 text - must be based on content from the corresponding passage",
           "isCorrect": false,
-          "feedback": "Feedback explaining why this is incorrect, referencing Chunk 5"
+          "feedback": "Feedback explaining why this is incorrect"
         },
         {
-          "text": "Choice 4 text - must reference content from Chunk 5",
+          "text": "Choice 4 text - must be based on content from the corresponding passage",
           "isCorrect": false,
-          "feedback": "Feedback explaining why this is incorrect, referencing Chunk 5"
+          "feedback": "Feedback explaining why this is incorrect"
         }
       ]
     }
   ],
-  "summary": "Brief 1-2 sentence summary covering all chunks"
+  "summary": "Brief 1-2 sentence summary covering all passages"
 }
 
 Requirements:
 - Provide exactly 5 questions in the "questions" array
-- Question 1 MUST be from Chunk 1 only
-- Question 2 MUST be from Chunk 2 only
-- Question 3 MUST be from Chunk 3 only
-- Question 4 MUST be from Chunk 4 only
-- Question 5 MUST be from Chunk 5 only
+- Question 1 MUST be from Passage 1 only
+- Question 2 MUST be from Passage 2 only
+- Question 3 MUST be from Passage 3 only
+- Question 4 MUST be from Passage 4 only
+- Question 5 MUST be from Passage 5 only
 - Each question must have exactly 4 choices
 - Only ONE choice per question should have isCorrect: true
-- ALL choices must be answerable/verifiable using ONLY the corresponding chunk
-- Do NOT mix information between chunks
+- ALL choices must be answerable/verifiable using ONLY the corresponding passage
+- Do NOT mix information between passages
 - Make questions test comprehension of main ideas, not trivia
 - Keep choices concise (1-2 sentences max)
-- Provide constructive feedback that references specific details from the chunk
-- Do NOT add information not in the chunks`;
+- Provide constructive feedback that references specific details from the passage
+- Do NOT add information not in the passages
+- Write questions naturally - DO NOT include phrases like "According to Chunk X" or "from Passage Y" in the actual question text`;
 };
 
 export function parseLLMResponse(response: string): any {
