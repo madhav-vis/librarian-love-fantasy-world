@@ -29,4 +29,7 @@ We are planning on creating Librarian Love: Fantasy Tycoon 4 with a more expansi
 
 We would love to have Goodreads integration for a more expansive library experience, where the game can be used as a private book rating and review log. 
 
-Inspired by highly profitable and popular gacha (lootbox) games, we will also implement more gacha features, such as ways to purchase gems with real-world currency. 
+Inspired by highly profitable and popular gacha (lootbox) games, we will also implement more gacha features, such as ways to purchase gems with real-world currency.
+
+<img width="1465" height="833" alt="Screenshot 2026-01-10 at 11 37 21 PM" src="https://github.com/user-attachments/assets/0085e465-e4fe-44d8-9da2-b51d6e53ad6b" />
+
