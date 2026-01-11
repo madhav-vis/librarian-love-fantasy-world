@@ -1,8 +1,9 @@
 node_modules/
 dist/
 build/
-.env
-.env.local
+**/.env
+**/.env.local
+**/.env.bak
 *.log
 .DS_Store
 epub-uploads/*.epub

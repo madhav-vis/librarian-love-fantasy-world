@@ -1,0 +1,28 @@
+```json
+{
+  "question": "According to the passage, which of the following accurately describes historical events or circumstances involving members of the Snowden family?",
+  "choices": [
+    {
+      "text": "Richard Snowden's arrival in Maryland expecting religious freedom, John Snowden's imprisonment for preaching the Quaker faith, and three of John's grandsons serving in the Continental Army during the Revolution.",
+      "isCorrect": true,
+      "feedback": "The passage states that Richard Snowden arrived in Maryland in 1658 with an understanding of religious freedom, John Snowden was imprisoned for preaching the Quaker faith before joining his brother in 1674, and three of John's grandsons served in the Continental Army during the Revolution."
+    },
+    {
+      "text": "Richard Snowden leading a rebellion against Lord Baltimore in Maryland due to the suppression of Quaker religious freedom.",
+      "isCorrect": false,
+      "feedback": "The passage states Richard Snowden arrived with the *understanding* that Lord Baltimore's guarantee of religious freedom would extend to Quakers, not that he led a rebellion due to its suppression."
+    },
+    {
+      "text": "William Penn transporting the entire Snowden family to Maryland on his ship, the Welcome, in 1682.",
+      "isCorrect": false,
+      "feedback": "The passage mentions John Snowden greeted William Penn's ship, the Welcome, in 1682, but Richard Snowden had arrived in Maryland much earlier in 1658, and it does not state the entire family arrived on that ship."
+    },
+    {
+      "text": "The Snowden family establishing sugar house prisons in Manhattan where British POWs were killed by being forced to eat gruel laced with ground glass.",
+      "isCorrect": false,
+      "feedback": "The passage states William Snowden died in custody at a sugar house prison and mentions a legend about the British killing POWs there, but it does not indicate the Snowden family established these prisons or were involved in such practices."
+    }
+  ],
+  "summary": "The passage introduces the narrator's family history, explaining the prevalence of the 'Snowden' name in Anne Arundel, Maryland, through generations of ancestors. It details Richard and John Snowden's early arrival in Maryland, their Quaker faith, and the service of John's grandsons, including the narrator's direct ancestor William Snowden, in the Continental Army despite their pacifist beliefs."
+}
+```

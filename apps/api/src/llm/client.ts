@@ -1,3 +1,4 @@
+import fs from "fs";
 // Lazy import to avoid errors when package is not installed
 let GoogleGenerativeAI: any = null;
 
@@ -48,7 +49,7 @@ export async function generateWithLLM(
       contents: [{ role: "user", parts: [{ text: userPrompt }] }],
       generationConfig: {
         temperature: 0.7,
-        maxOutputTokens: 2048,
+        maxOutputTokens: 10000,
       },
     });
 
@@ -147,6 +148,10 @@ Requirements:
 };
 
 export function parseLLMResponse(response: string): any {
+
+  // dump to a file 
+  fs.writeFileSync("llm_response.txt", response.trim());
+
   // Try to extract JSON from response (handle cases where LLM wraps in markdown)
   let jsonStr = response.trim();
   
