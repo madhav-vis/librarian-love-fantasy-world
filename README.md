@@ -1,7 +1,7 @@
 # Librarian Love: Fantasy Tycoon 3
 
 ## Inspiration
-In the age of increasing illiteracy, we wished to gamify reading by combining our love for romance light novels and modern gacha games. Inspired by one of our member's endless determination in overcoming his dyslexia disability, and his simultaneous love for gacha games, we reward players for progressing through book chapters with a mysterious story line and fun characters.
+In the age of decreasing readership, we wished to gamify reading by combining our love for romance light novels and modern gacha games. Inspired by one of our member's endless determination in overcoming his dyslexia disability, and his simultaneous love for gacha games, we reward players for progressing through book chapters with a mysterious story line and fun characters.
 
 ## What it does
 Players input the book that they are currently reading. The player wakes up in a strange library, greeted by a girl named Marina. She gives us gems, the game's currency. We can collect more gems by logging more chapters that we read. The gems can be exchanged for a clue. 
